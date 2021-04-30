@@ -1,10 +1,10 @@
 package com.webflux.board.post
 
 import com.webflux.board.util.MockitoHelper
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @WebFluxTest
-internal class PostRouterTest {
+internal class PostHandlerTest {
     @MockBean
     lateinit var postRepository: PostRepository
     private lateinit var webClient: WebTestClient
@@ -26,15 +26,15 @@ internal class PostRouterTest {
             .bindToRouterFunction(routerFunction.create())
             .build()
 
-        Mockito.`when`(postRepository.save(MockitoHelper.anyObject()))
+        `when`(postRepository.save(MockitoHelper.anyObject()))
             .thenReturn(Mono.just(Post(1L, "test")))
 
-        Mockito.`when`(postRepository.findAll())
+        `when`(postRepository.findAll())
             .thenReturn(
                 Flux.just(
-                Post(1L, "test1"),
-                Post(2L, "test2")
-            ))
+                    Post(1L, "test1"),
+                    Post(2L, "test2")
+                ))
     }
 
     @Test
@@ -65,6 +65,9 @@ internal class PostRouterTest {
             .hasSize(2)
             .returnResult().responseBody
 
-        post?.forEach { println(it) }
+        assertEquals(1L, post?.get(0)?.id)
+        assertEquals(2L, post?.get(1)?.id)
+        assertEquals("test1", post?.get(0)?.content)
+        assertEquals("test2", post?.get(1)?.content)
     }
 }
