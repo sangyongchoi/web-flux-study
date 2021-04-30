@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.created
 import org.springframework.web.reactive.function.server.ServerResponse.ok
+import org.springframework.web.reactive.function.server.awaitBody
 import org.springframework.web.reactive.function.server.body
 import java.net.URI
 
@@ -16,11 +17,10 @@ class PostHandler(
 ) {
 
     suspend fun create(serverRequest: ServerRequest): ServerResponse {
-        val post = serverRequest.bodyToMono(Post::class.java)
+        val post = serverRequest.awaitBody<Post>()
 
-        return postRepository.saveAll(post)
+        return postRepository.save(post)
             .flatMap { created(URI.create("/todos/${it.id}")).build() }
-            .next()
             .awaitFirst()
     }
 
