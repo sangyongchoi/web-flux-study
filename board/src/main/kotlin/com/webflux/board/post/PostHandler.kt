@@ -19,8 +19,7 @@ class PostHandler(
     suspend fun create(serverRequest: ServerRequest): ServerResponse {
         val post = serverRequest.awaitBody<Post>()
 
-        return postRepository.save(post)
-            .flatMap { created(URI.create("/todos/${it.id}")).build() }
+        return ok().body(postRepository.save(post))
             .awaitFirst()
     }
 
