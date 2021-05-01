@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.reactive.function.server.MockServerRequest
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.util.function.Tuple2
 import java.time.Duration
 
 @ExperimentalCoroutinesApi
@@ -92,12 +93,17 @@ internal class BookHandlerTest {
     }
 
     private fun updateBookYearByTitle(title: Mono<String>, newPublishingYear: Mono<Int>): Mono<Book> {
+        return Mono.zip(title, newPublishingYear)
+            .flatMap { data: Tuple2<String, Int> ->
+                val titleVal = data.t1
+                val yearVal = data.t2
 
-        return bookRepository.findByTitle(title)
-                .flatMap { book -> newPublishingYear.flatMap { year ->
-                    book.changePublishingYear(year)
-                    bookRepository.save(book)
-                } }
+                bookRepository.findByTitle(Mono.just(titleVal))
+                    .flatMap { book ->
+                        book.changePublishingYear(yearVal)
+                        bookRepository.save(book)
+                    }
+            }
     }
 
 }
