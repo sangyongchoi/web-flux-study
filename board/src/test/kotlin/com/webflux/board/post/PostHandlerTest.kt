@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono
 
 @WebFluxTest
 internal class PostHandlerTest {
+
     @MockBean
     lateinit var postRepository: PostRepository
     private lateinit var webClient: WebTestClient

@@ -14,7 +14,7 @@ class PostRouter(
     fun create(): RouterFunction<ServerResponse> {
         return coRouter {
             POST("/posts", accept(MediaType.APPLICATION_JSON), handler::create)
-            GET("/posts", accept(MediaType.APPLICATION_JSON), handler::getList)
+            GET("/posts", accept(MediaType.APPLICATION_JSON), handler::list)
         }
     }
 }

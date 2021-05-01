@@ -3,6 +3,7 @@ package com.webflux.board.post
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitLast
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.created
@@ -11,9 +12,9 @@ import org.springframework.web.reactive.function.server.awaitBody
 import org.springframework.web.reactive.function.server.body
 import java.net.URI
 
-@Component
+@Service
 class PostHandler(
-    private var postRepository: PostRepository
+    private val postRepository: PostRepository
 ) {
 
     suspend fun create(serverRequest: ServerRequest): ServerResponse {
@@ -23,7 +24,7 @@ class PostHandler(
             .awaitFirst()
     }
 
-    suspend fun getList(serverRequest: ServerRequest): ServerResponse {
+    suspend fun list(serverRequest: ServerRequest): ServerResponse {
         return ok().body(postRepository.findAll())
             .awaitLast()
     }
