@@ -1,6 +1,6 @@
 package com.webflux.board.post
 
-import org.springframework.data.repository.reactive.ReactiveCrudRepository
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 
-interface PostRepository : ReactiveCrudRepository<Post, Long>{
+interface PostRepository : ReactiveMongoRepository<Post, Long>{
 }

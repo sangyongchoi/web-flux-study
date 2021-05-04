@@ -1,13 +1,16 @@
 package com.webflux.board.post
 
+import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Table
+import org.springframework.data.mongodb.core.mapping.Document
 
-@Table
+@Document
 class Post(
-    @field:Id var id:Long? = null,
     val content: String
 ) {
+
+    @Id
+    var id:ObjectId? = null
 
     override fun toString(): String {
         return "{ id: $id content: $content }"
