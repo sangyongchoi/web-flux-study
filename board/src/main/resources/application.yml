@@ -3,3 +3,13 @@ spring:
     active: dev
   main:
     allow-bean-definition-overriding: true
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+            repository:
+              Query: DEBUG
