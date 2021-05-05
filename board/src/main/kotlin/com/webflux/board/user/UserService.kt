@@ -1,7 +1,9 @@
 package com.webflux.board.user
 
 import kotlinx.coroutines.reactive.awaitFirst
+import kotlinx.coroutines.reactive.awaitFirstOrDefault
 import kotlinx.coroutines.reactive.awaitFirstOrElse
+import kotlinx.coroutines.reactive.awaitSingle
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,17 +13,18 @@ class UserService(
 
     suspend fun signUp(user: User): User {
         val userId = user.userId
+        val isExisting = findById(userId)
 
-        val awaitFirstOrElse = userRepository.findById(userId)
-            .map {
-                if(it != null) {
-                    throw AlreadyExistsException("이미 존재하는 유저입니다.")
-                }
+        if (isExisting != null) {
+            throw AlreadyExistsException("이미 존재하는 유저입니다.")
+        }
 
-                userRepository.save(user)
-            }
-            .awaitFirstOrElse { throw RuntimeException("실행중 에러가 발생하였습니다.") }
+        return userRepository.save(user)
+            .awaitSingle()
+    }
 
-        return awaitFirstOrElse.awaitFirst()
+    suspend fun findById(userId: String): User? {
+        return userRepository.findById(userId)
+            .awaitFirstOrDefault(null)
     }
 }
