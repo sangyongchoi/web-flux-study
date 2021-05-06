@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull
 import org.springframework.data.annotation.Id
 
 class Reply (
+    @field:NotNull val postId: ObjectId,
     @field:NotNull val writerId: String,
     @field:NotNull val contents: String
 ){

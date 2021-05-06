@@ -1,6 +1,7 @@
 package com.webflux.board.post.reply
 
 import kotlinx.coroutines.runBlocking
+import org.bson.types.ObjectId
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
@@ -28,7 +29,7 @@ internal class ReplyServiceTest {
     @Test
     fun writer() {
         runBlocking {
-            val reply = Reply("csytest1", "test")
+            val reply = Reply(ObjectId("111111"),"csytest1", "test")
             replyService.write(reply)
 
             // success

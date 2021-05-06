@@ -11,7 +11,7 @@ class PostRouter(
 ) {
 
     @Bean
-    fun create(): RouterFunction<ServerResponse> {
+    fun postRouterCreate(): RouterFunction<ServerResponse> {
         return coRouter {
             POST("/posts", accept(MediaType.APPLICATION_JSON), handler::create)
             GET("/posts", accept(MediaType.APPLICATION_JSON), handler::list)

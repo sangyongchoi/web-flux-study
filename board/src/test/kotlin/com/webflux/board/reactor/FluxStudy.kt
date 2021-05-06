@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.reactivestreams.Subscription
 import reactor.core.publisher.Flux
 import reactor.core.publisher.FluxSink
+import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 import java.util.concurrent.atomic.AtomicLong
 
@@ -187,8 +188,7 @@ class FluxStudy {
     }
 
     suspend fun test1(){
-        println("1")
-        delay(3000)
+
     }
 
     suspend fun test2(){
