@@ -1,5 +1,7 @@
 package com.webflux.board.reactor
 
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.reactivestreams.Subscription
 import reactor.core.publisher.Flux
@@ -173,5 +175,23 @@ class FluxStudy {
             .onErrorReturn(123123)
 
         flux.subscribe{ println(it) }
+    }
+
+    @Test
+    fun suspend_test() {
+        runBlocking {
+            test1()
+            println("안녕")
+            test2()
+        }
+    }
+
+    suspend fun test1(){
+        println("1")
+        delay(3000)
+    }
+
+    suspend fun test2(){
+        println("2")
     }
 }
