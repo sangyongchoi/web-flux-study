@@ -2,6 +2,7 @@ package com.webflux.board.post.reply
 
 import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitFirstOrElse
+import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -20,6 +21,7 @@ class ReplyService(
         val replyId = ObjectId(deleteRequest.replyId)
         val requestId = deleteRequest.requestId
 
+        // 방법 1
         Mono.just(replyId)
             .flatMap { replyRepository.findById(replyId) }
             .map {
@@ -31,5 +33,22 @@ class ReplyService(
             }
             .awaitFirst()
             .subscribe()
+
+        // 방법 2
+        /*
+        val reply = findById(deleteRequest.replyId)
+
+        if (reply?.writerId != requestId) {
+            throw NotPermissionException("작성자만 삭제할 수 있습니다.")
+        }
+
+        replyRepository.delete(reply)
+            .subscribe()
+         */
+    }
+
+    suspend fun findById(id: String): Reply? {
+        return replyRepository.findById(ObjectId(id))
+            .awaitFirstOrNull()
     }
 }
