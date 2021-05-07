@@ -20,7 +20,7 @@ class ReplyService(
         val replyId = ObjectId(deleteRequest.replyId)
         val requestId = deleteRequest.requestId
 
-        val result = Mono.just(replyId)
+        Mono.just(replyId)
             .flatMap { replyRepository.findById(replyId) }
             .map {
                 if(it.writerId == requestId) {
