@@ -21,4 +21,13 @@ class ReplyHandler(
             .json()
             .bodyValueAndAwait(replyService.write(reply))
     }
+
+    suspend fun delete(serverRequest: ServerRequest): ServerResponse {
+        val deleteRequest = serverRequest.bodyToMono(ReplyDeleteRequest::class.java)
+            .awaitFirst()
+
+        return ok()
+            .json()
+            .bodyValueAndAwait(replyService.delete(deleteRequest))
+    }
 }

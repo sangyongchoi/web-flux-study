@@ -15,7 +15,8 @@ class ReplyRouter(
     @Bean
     fun replyRouterCreate(): RouterFunction<ServerResponse> {
         return coRouter {
-            POST("/reply/write", accept(MediaType.APPLICATION_JSON), replyHandler::write)
+            POST("/reply", accept(MediaType.APPLICATION_JSON), replyHandler::write)
+            DELETE("/reply", accept(MediaType.APPLICATION_JSON), replyHandler::delete)
         }
     }
 }

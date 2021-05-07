@@ -12,4 +12,9 @@ class Reply (
 
     @Id
     var id: ObjectId? = null
+    override fun toString(): String {
+        return "Reply(postId=$postId, writerId='$writerId', contents='$contents', id=$id)"
+    }
+
+
 }
